@@ -1,0 +1,5 @@
+{
+    "name": "The Hills Connection",
+    "description": "Draw and Chat with Hills kids",
+    "keywords": ["node", "express", "socket.io", "static"]
+}

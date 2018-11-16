@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>The Hills Connection</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
+	
+	
+	<style>
+		body {
+			margin:0;
+			padding:0;
+			overflow: hidden;
+		}
+		canvas {
+			margin:auto;
+		}
+	</style>
+</head>
+<body>
+	<style type = "text/css">
+		*
+		{
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+		}
+
+		h1
+		{
+			color:saddlebrown;
+		}
+
+		body
+		{
+			margin-top: 5px;
+			margin-left: 5px;
+		}
+
+		#output
+		{
+			font-size: 12px;
+			margin-top: 5px;
+			border: 2px solid black;
+			max-width: 415px;
+			max-height: 490px;
+			height: 750px;
+			overflow: auto;
+		}
+
+		button
+		{
+			border: none;
+			color: white;
+			padding: 10px 10px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			border-radius: 12px;	
+		}
+		#red{background-color: red;}
+		#orange{background-color: orange;}
+		#yellow{background-color: yellow; color:black;}
+		#green{background-color: green;}
+		#blue{background-color: blue;}
+		#purple{background-color: purple;}
+		#black{background-color: black;}
+		#deleteButton{background-color:deeppink;}
+		#smaller{background-color:coral}
+		#bigger{background-color:coral;}
+		#send{background-color:royalblue;}
+
+	</style>
+	<h1>The Hills Connection</h1>
+	<button type="button" id="red">RED</button>
+	<button type="button" id="orange">ORANGE</button>
+	<button type="button" id="yellow">YELLOW</button>
+	<button type="button" id="green">GREEN</button>
+	<p></p>
+	<button type="button" id="blue">BLUE</button>
+	<button type="button" id="purple">PURPLE</button>
+	<button type="button" id="black">BLACK</button>
+	<p></p>
+	<button type="button" id="deleteButton" name="deleteButton">DELETE ALL</button>
+	<button type="button" id="smaller">SMALLER BRUSH</button>
+	<button type="button" id="bigger">BIGGER BRUSH</button>
+	<p></p>
+
+	<div id="chat" data-spy="scroll" class="thing">
+		<div id = "chat-window">
+			<input id="handle" type="text" placeholder = "Name"/>
+			<input id="message" type="text" placeholder = "Message"/>
+			<button id="send">Send</button>
+			<div id="output"></div>
+		</div>
+	</div>
+
+	<script src="libraries/p5.js"></script>
+	<script src="libraries/p5.dom.js"></script>
+	<script src="libraries/p5.sound.js"></script>
+	<script src="sketch.js"></script>
+</body>
+</html>
