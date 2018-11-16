@@ -1,15 +1,30 @@
 p5.disableFriendlyErrors = true; // disables FES
 var socket = io.connect('https://hills-connection.herokuapp.com/');
-// var socket = io.connect('localhost:3000');
+//var socket = io.connect('localhost:3000');
 var r, g, b, size;
 var alreadyDrawn = [];
 
 socket.on('load-in', function(data)
 {
-    console.log("working")
     alreadyDrawn = data.spots;
+    console.log("first")
 });
 
+// socket.on('load-in', function(data){
+//     console.log("this part is running");
+//     for(var i = 0; i < Object.keys(data.spots).length; i++)
+//     {
+//         drawSpot(Object.keys(data.spots)[i].x, Object.keys(data.spots)[i].y, Object.keys(data.spots)[i].s, 
+//         Object.keys(data.spots)[i].r, Object.keys(data.spots)[i].g, Object.keys(data.spots)[i].b);
+//     }
+// });
+
+function drawSpot(x, y, s, r, g, b)
+{
+    fill(r, g, b);
+    noStroke();
+    ellipse(x, y, s, s);
+}
 
 function setup() {
     var canvas =  createCanvas(windowWidth, windowHeight);
@@ -20,11 +35,20 @@ function setup() {
     b = 0;
     size = 15;
     background(51);
+
+    // var drawSpot = function(x, y, s, r, g, b)
+    // {
+    //     fill(r, g, b);
+    //     noStroke();
+    //     ellipse(x, y, s, s);
+    // }
+    
     
     //drawing  the spots already loaded
+
     var spotLength = Object.keys(alreadyDrawn).length;
-    // var spotLength = alreadyDrawn.length;
-    console.log(spotLength);
+    var spotLength = alreadyDrawn.length;
+    console.log("second");
         for(var i = 0; i < spotLength; i++)
         {
             drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
@@ -41,7 +65,7 @@ function setup() {
     });   
     
 }
-function draw() {}
+function draw(){}
 
 function mouseDragged()
 {
@@ -135,9 +159,3 @@ socket.on('chat', function(data){
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
 
-function drawSpot(x, y, s, r, g, b)
-{
-    fill(r, g, b);
-    noStroke();
-    ellipse(x, y, s, s);
-}
