@@ -1,5 +1,6 @@
 p5.disableFriendlyErrors = true; // disables FES
-var socket = io.connect('https://hills-connection.herokuapp.com/');
+ var socket = io.connect('https://hills-connection.herokuapp.com/');
+//var socket = io.connect('localhost:3000');
 var r, g, b, size;
 var alreadyDrawn;
 
@@ -21,7 +22,8 @@ function setup() {
     background(51);
     
     //drawing  the spots already loaded
-    var spotLength = alreadyDrawn.length;
+    var spotLength = Object.keys(alreadyDrawn).length;
+    // var spotLength = alreadyDrawn.length;
     console.log(spotLength);
     if(spotLength > 0)
     {
