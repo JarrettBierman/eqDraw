@@ -1,8 +1,8 @@
 p5.disableFriendlyErrors = true; // disables FES
- var socket = io.connect('https://hills-connection.herokuapp.com/');
-//var socket = io.connect('localhost:3000');
+var socket = io.connect('https://hills-connection.herokuapp.com/');
 var r, g, b, size;
-var alreadyDrawn;
+var alreadyDrawn = [];
+console.log(alreadyDrawn);
 
 window.onload = socket.on('load-in', function(data)
 {
