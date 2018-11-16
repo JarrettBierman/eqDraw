@@ -2,29 +2,16 @@ p5.disableFriendlyErrors = true; // disables FES
 var socket = io.connect('https://hills-connection.herokuapp.com/');
 //var socket = io.connect('localhost:3000');
 var r, g, b, size;
+var spotsLoaded = false;
 var alreadyDrawn = [];
 
 socket.on('load-in', function(data)
 {
     alreadyDrawn = data.spots;
+    spotsLoaded = true;
     console.log("first")
 });
-
-// socket.on('load-in', function(data){
-//     console.log("this part is running");
-//     for(var i = 0; i < Object.keys(data.spots).length; i++)
-//     {
-//         drawSpot(Object.keys(data.spots)[i].x, Object.keys(data.spots)[i].y, Object.keys(data.spots)[i].s, 
-//         Object.keys(data.spots)[i].r, Object.keys(data.spots)[i].g, Object.keys(data.spots)[i].b);
-//     }
-// });
-
-function drawSpot(x, y, s, r, g, b)
-{
-    fill(r, g, b);
-    noStroke();
-    ellipse(x, y, s, s);
-}
+        
 
 function setup() {
     var canvas =  createCanvas(windowWidth, windowHeight);
@@ -36,29 +23,21 @@ function setup() {
     size = 15;
     background(51);
 
-    // var drawSpot = function(x, y, s, r, g, b)
-    // {
-    //     fill(r, g, b);
-    //     noStroke();
-    //     ellipse(x, y, s, s);
-    // }
-    
-    
-    //drawing  the spots already loaded
-
-    var spotLength = Object.keys(alreadyDrawn).length;
-    var spotLength = alreadyDrawn.length;
-    console.log("second");
-        for(var i = 0; i < spotLength; i++)
-        {
+    //draw the loaded spots
+    if(spotsLoaded)
+    {
+        var spotLength = alreadyDrawn.length;
+        console.log("second");
+        for(var i = 0; i < spotLength; i++){
             drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
         }
-
+    }
+    
     //Where other people's drawings are.
     socket.on('orbs', function(data){
         drawSpot(data.x, data.y, data.s, data.r, data.g, data.b);
     });
-
+    
     //erase the entire screen
     socket.on('delete', function(data){
         background(51);
@@ -113,16 +92,20 @@ black.onclick = function(){r = 0;  g = 0;  b = 0;}
 var bigger = document.getElementById('bigger');
 bigger.onclick = function(){
     if(size < 100)
-        size += 5;
+    size += 5;
 }
 var smaller = document.getElementById('smaller');
 smaller.onclick = function(){
     if(size > 5)
-        size -= 5;
+    size -= 5;
 }
 
-
-
+function drawSpot(x, y, s, r, g, b)
+{
+    fill(r, g, b);
+    noStroke();
+    ellipse(x, y, s, s);
+}
 
 
 //THE CHAT STUFF
@@ -132,11 +115,11 @@ var btn = document.getElementById('send');
 var output = document.getElementById('output');
 
 //emit events when shit's sent (this slient sends stuff to the server)
-
 function sendMessage()
 {
     socket.emit('chat', {message: message.value, handle: handle.value});
     message.value = "";
+
     //keep scrollbar at bottom
     var messageBody = document.querySelector('#output');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;

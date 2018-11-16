@@ -17,7 +17,7 @@ io.on('connection', function(socket){//when a client connects, this code runs :)
     console.log("new connection: " + socket.id);
 
     //load in of orbs
-    io.emit('load-in', {spots: spots});
+    socket.emit('load-in', {spots: spots});
 
     //draw the orbs
     socket.on('orbs', function(data){
