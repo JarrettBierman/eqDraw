@@ -34,7 +34,7 @@ function setup() {
                 drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
             }
         }
-    }while(!spotLoaded);
+    }while(!spotsLoaded);
     
     //Where other people's drawings are.
     socket.on('orbs', function(data){
