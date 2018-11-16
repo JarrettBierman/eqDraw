@@ -1,14 +1,14 @@
 p5.disableFriendlyErrors = true; // disables FES
 var socket = io.connect('https://hills-connection.herokuapp.com/');
+// var socket = io.connect('localhost:3000');
 var r, g, b, size;
 var alreadyDrawn = [];
-console.log(alreadyDrawn);
 
-window.onload = socket.on('load-in', function(data)
+socket.on('load-in', function(data)
 {
+    console.log("working")
     alreadyDrawn = data.spots;
 });
-
 
 
 function setup() {
@@ -25,13 +25,10 @@ function setup() {
     var spotLength = Object.keys(alreadyDrawn).length;
     // var spotLength = alreadyDrawn.length;
     console.log(spotLength);
-    if(spotLength > 0)
-    {
         for(var i = 0; i < spotLength; i++)
         {
             drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
         }
-    }
 
     //Where other people's drawings are.
     socket.on('orbs', function(data){
