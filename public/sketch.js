@@ -21,9 +21,14 @@ function setup() {
     background(51);
     
     //drawing  the spots already loaded
-    for(var i = 0; i < alreadyDrawn.length; i++)
+    var spotLength = alreadyDrawn.length;
+    console.log(spotLength);
+    if(spotLength > 0)
     {
-        drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
+        for(var i = 0; i < spotLength; i++)
+        {
+            drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
+        }
     }
 
     //Where other people's drawings are.
