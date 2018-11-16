@@ -24,14 +24,17 @@ function setup() {
     background(51);
 
     //draw the loaded spots
-    if(spotsLoaded)
+    do
     {
-        var spotLength = alreadyDrawn.length;
-        console.log("second");
-        for(var i = 0; i < spotLength; i++){
-            drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
+        if(spotsLoaded)
+        {
+            var spotLength = alreadyDrawn.length;
+            console.log("second");
+            for(var i = 0; i < spotLength; i++){
+                drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
+            }
         }
-    }
+    }while(!spotLoaded);
     
     //Where other people's drawings are.
     socket.on('orbs', function(data){
