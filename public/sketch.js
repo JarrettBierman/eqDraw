@@ -2,16 +2,12 @@ p5.disableFriendlyErrors = true; // disables FES
 var socket = io.connect('https://hills-connection.herokuapp.com/');
 //var socket = io.connect('localhost:3000');
 var r, g, b, size;
-var spotsLoaded = false;
 var alreadyDrawn = [];
 
-socket.on('load-in', function(data)
-{
-    alreadyDrawn = data.spots;
-    spotsLoaded = true;
-    console.log("first")
-});
-        
+window.onload = function(){
+    socket.emit('load-in');
+    console.log("sending");
+}
 
 function setup() {
     var canvas =  createCanvas(windowWidth, windowHeight);
@@ -22,19 +18,21 @@ function setup() {
     b = 0;
     size = 15;
     background(51);
+    
+    socket.on('load-in', function(data){  
+        alreadyDrawn = data.spots;
+        console.log("first")
+    });
 
     //draw the loaded spots
-    do
-    {
-        if(spotsLoaded)
-        {
-            var spotLength = alreadyDrawn.length;
-            console.log("second");
-            for(var i = 0; i < spotLength; i++){
-                drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
-            }
+    setTimeout(function(){
+        var spotLength = alreadyDrawn.length;
+        console.log("second");
+        for(var i = 0; i < spotLength; i++){
+            drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
         }
-    }while(!spotsLoaded);
+    }, 500);
+        
     
     //Where other people's drawings are.
     socket.on('orbs', function(data){

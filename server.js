@@ -16,14 +16,17 @@ var io = socket(server); //we want this socket to work with this server.
 io.on('connection', function(socket){//when a client connects, this code runs :)
     console.log("new connection: " + socket.id);
 
-    //load in of orbs
-    socket.emit('load-in', {spots: spots});
-
     //draw the orbs
     socket.on('orbs', function(data){
         spots.push({x: data.x, y: data.y, s: data.s, r: data.r, g: data.g, b: data.b});
         socket.broadcast.emit('orbs', data);
     });
+
+    //load in of orbs
+    socket.on('load-in', function(){
+        io.emit('load-in', {spots: spots});
+    });
+
 
     
     //the chat text
