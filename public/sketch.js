@@ -121,12 +121,15 @@ var output = document.getElementById('output');
 //emit events when shit's sent (this slient sends stuff to the server)
 function sendMessage()
 {
-    socket.emit('chat', {message: message.value, handle: handle.value});
-    message.value = "";
+    if(message.value.length > 0 && handle.value.length > 0)
+    {
+        socket.emit('chat', {message: message.value, handle: handle.value});
+        message.value = "";
 
-    //keep scrollbar at bottom
-    var messageBody = document.querySelector('#output');
-    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        //keep scrollbar at bottom
+        var messageBody = document.querySelector('#output');
+        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    }
 }
 
 btn.addEventListener('click', function(){
@@ -145,13 +148,6 @@ socket.on('chat', function(data){
     var messageBody = document.querySelector('#output');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
-
-// function drawSpot(x, y, s, r, g, b)
-// {
-//     fill(r, g, b);
-//     noStroke();
-//     ellipse(x, y, s, s);
-// }
 
 function drawSpot(x, y, s, c)
 {
