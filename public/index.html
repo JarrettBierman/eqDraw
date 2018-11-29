@@ -19,8 +19,6 @@
 			margin:auto;
 		}
 	</style>
-</head>
-<body>
 	<style type = "text/css">
 		*
 		{
@@ -49,6 +47,11 @@
 			overflow: auto;
 		}
 
+		#range
+		{
+			width: 20%;
+		}
+
 		button
 		{
 			border: none;
@@ -67,24 +70,32 @@
 		#purple{background-color: purple;}
 		#black{background-color: black;}
 		#deleteButton{background-color:deeppink;}
-		#smaller{background-color:coral}
-		#bigger{background-color:coral;}
 		#send{background-color:royalblue;}
+		#custom{background-color:olivedrab;}
+		#white{	background-color:white;
+				border:1px solid #000000;
+				color:black;
+			  }
 
 	</style>
+</head>
+<body>
 	<h1>The Hills Connection</h1>
 	<button type="button" id="red">RED</button>
 	<button type="button" id="orange">ORANGE</button>
 	<button type="button" id="yellow">YELLOW</button>
 	<button type="button" id="green">GREEN</button>
+	<input type="color" id="chooser" value="#ffdab9">
 	<p></p>
 	<button type="button" id="blue">BLUE</button>
 	<button type="button" id="purple">PURPLE</button>
 	<button type="button" id="black">BLACK</button>
+	<button type="button" id="white">WHITE</button>
+	<button type="button" id="custom">CUSTOM</button>
 	<p></p>
 	<button type="button" id="deleteButton" name="deleteButton">DELETE ALL</button>
-	<button type="button" id="smaller">SMALLER BRUSH</button>
-	<button type="button" id="bigger">BIGGER BRUSH</button>
+	<input type="range" min=1 max=100 value = 15 id="range">
+	<span id="size"></span>
 	<p></p>
 
 	<div id="chat" data-spy="scroll" class="thing">
