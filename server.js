@@ -18,7 +18,6 @@ io.on('connection', function(socket){//when a client connects, this code runs :)
 
     //draw the orbs
     socket.on('orbs', function(data){
-        // spots.push({x: data.x, y: data.y, s: data.s, r: data.r, g: data.g, b: data.b});
         spots.push({x: data.x, y: data.y, s: data.s, color: data.color});
         socket.broadcast.emit('orbs', data);
     });

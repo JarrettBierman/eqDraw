@@ -1,7 +1,7 @@
 //p5.disableFriendlyErrors = true; // disables FES
 var socket = io.connect('https://hills-connection.herokuapp.com/');
 //var socket = io.connect('localhost:3000');
-var r, g, b, size;
+var size;
 var color;
 var alreadyDrawn = [];
 
@@ -14,15 +14,11 @@ function setup() {
     var canvas =  createCanvas(windowWidth, windowHeight);
     canvas.position(450, 0);
     frameRate(10);
-    color = '#ff0000';
-    r = 255;
-    g = 0;
-    b = 0;
     size = 15;
+    color = '#ff0000';
     background(51);
     
     socket.on('load-in', function(data){  
-        console.log(data.spots.color);
         alreadyDrawn = data.spots;
         console.log("first")
     });
@@ -33,7 +29,6 @@ function setup() {
         console.log("second");
         for(var i = 0; i < spotLength; i++){
             drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].color);
-            // drawSpot(alreadyDrawn[i].x, alreadyDrawn[i].y, alreadyDrawn[i].s, alreadyDrawn[i].r, alreadyDrawn[i].g, alreadyDrawn[i].b);
         }
     }, 500);
         
@@ -41,7 +36,6 @@ function setup() {
     //Where other people's drawings are.
     socket.on('orbs', function(data){
         drawSpot(data.x, data.y, data.s, data.color);
-        // drawSpot(data.x, data.y, data.s, data.r, data.g, data.b);
     });
     
     //erase the entire screen
@@ -56,16 +50,14 @@ function draw(){}
 function mouseDragged()
 {
     //send the information
-    // socket.emit('orbs', {x: mouseX, y: mouseY, s: size, r: r, g: g, b: b});
     socket.emit('orbs', {x: mouseX, y: mouseY, s: size, color: color});
     drawSpot(mouseX, mouseY, size, color);
-    // drawSpot(mouseX, mouseY, size, r, g, b);
 }
 function mousePressed()
 {
     //send the information
-    // socket.emit('orbs', {x: mouseX, y: mouseY, s: size, r: r, g: g, b: b});
-    // drawSpot(mouseX, mouseY, size, r, g, b);
+    socket.emit('orbs', {x: mouseX, y: mouseY, s: size, color: color});
+    drawSpot(mouseX, mouseY, size, color);
 }
 
 //delete the screen
@@ -77,17 +69,16 @@ deleteButton.onclick = function(){
 
 //Change Color Buttons
 var red = document.getElementById('red');
-red.onclick = function(){r = 255;  g = 0;  b = 0;}
+red.onclick = function(){color = '#ff0000';}
 
 var orange = document.getElementById('orange');
-orange.onclick = function(){r = 255;  g = 165;  b = 0;}
+orange.onclick = function(){color = '#ff6600';}
 
 var yellow = document.getElementById('yellow');
-yellow.onclick = function(){r = 255;  g = 255;  b = 0;}
+yellow.onclick = function(){color = '#ffff00';}
 
 var green = document.getElementById('green');
 green.onclick = function(){color = '#008000';}
-// green.onclick = function(){r = 0;  g = 153;  b = 51;}
 
 var blue = document.getElementById('blue');
 blue.onclick = function(){color = '#0000ff';}
@@ -96,10 +87,10 @@ var purple = document.getElementById('purple');
 purple.onclick = function(){color = '#800080';}
 
 var black = document.getElementById('black');
-black.onclick = function(){r = 0;  g = 0;  b = 0;}
+black.onclick = function(){color = '#000000';}
 
 var white = document.getElementById('white');
-white.onclick = function(){r = 255;  g = 255;  b = 255;}
+white.onclick = function(){color = '#ffffff';}
 
 var customChooser = document.getElementById('chooser');
 var custom = document.getElementById('custom');
