@@ -1,6 +1,6 @@
 //p5.disableFriendlyErrors = true; // disables FES
-// var socket = io.connect('https://hills-connection.herokuapp.com/');
-var socket = io.connect('localhost:3000');
+var socket = io.connect('https://hills-connection.herokuapp.com/');
+// var socket = io.connect('localhost:3000');
 var size;
 var color;
 var r, g, b;
@@ -183,7 +183,7 @@ function rgbToHexHelper(rgb) {
     }
     return hex;
   };
-  
+
 
 //THE CHAT STUFF
 var message = document.getElementById('message');
