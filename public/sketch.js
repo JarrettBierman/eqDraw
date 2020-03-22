@@ -1,8 +1,9 @@
 //p5.disableFriendlyErrors = true; // disables FES
-var socket = io.connect('https://hills-connection.herokuapp.com/');
-//var socket = io.connect('localhost:3000');
+// var socket = io.connect('https://hills-connection.herokuapp.com/');
+var socket = io.connect('localhost:3000');
 var size;
 var color;
+var r, g, b;
 var alreadyDrawn = [];
 
 window.onload = function(){
@@ -15,7 +16,10 @@ function setup() {
     canvas.position(450, 0);
     frameRate(10);
     size = 15;
-    color = '#ff0000';
+    r = 255;
+    g = 0;
+    b = 0;
+    color = rgbToHex(r, g, b);
     background(51);
     
     socket.on('load-in', function(data){  
@@ -45,7 +49,8 @@ function setup() {
     
     
 }
-function draw(){}
+function draw(){
+}
 
 function mouseDragged()
 {
@@ -69,48 +74,116 @@ deleteButton.onclick = function(){
 
 //Change Color Buttons
 var red = document.getElementById('red');
-red.onclick = function(){color = '#ff0000';}
+red.onclick = function(){changeColor(255,0,0);}
 
 var orange = document.getElementById('orange');
-orange.onclick = function(){color = '#ff6600';}
+orange.onclick = function(){changeColor(255,116,23);}
 
 var yellow = document.getElementById('yellow');
-yellow.onclick = function(){color = '#ffff00';}
+yellow.onclick = function(){changeColor(255,255,0);}
 
 var green = document.getElementById('green');
-green.onclick = function(){color = '#008000';}
+green.onclick = function(){changeColor(0,128,0);}
 
 var blue = document.getElementById('blue');
-blue.onclick = function(){color = '#0000ff';}
+blue.onclick = function(){changeColor(0,0,255);}
 
 var purple = document.getElementById('purple');
-purple.onclick = function(){color = '#800080';}
+purple.onclick = function(){changeColor(128,0,128);}
+
+var pink = document.getElementById('pink');
+pink.onclick = function(){changeColor(255,105,180);}
 
 var black = document.getElementById('black');
-black.onclick = function(){color = '#000000';}
+black.onclick = function(){changeColor(0,0,0);}
 
 var white = document.getElementById('white');
-white.onclick = function(){color = '#ffffff';}
+white.onclick = function(){changeColor(255,255,255);}
 
-var customChooser = document.getElementById('chooser');
-var custom = document.getElementById('custom');
-custom.onclick = function(){
-    custom.style.background = customChooser.value;
-    color = customChooser.value;
-}
+// var customChooser = document.getElementById('chooser');
+// var custom = document.getElementById('custom');
+// custom.onclick = function(){
+//     custom.style.background = customChooser.value;
+//     color = customChooser.value;
+// }
 
 //Bigger and Smaller brush size buttons
-var slider = document.getElementById("range");
-var strokeSize = document.getElementById("size");
-strokeSize.innerHTML = slider.value;
+var sizeSlide = document.getElementById("sizeSlide");
+var sizeInput = document.getElementById("sizeInput");
+var redSlide = document.getElementById("redSlide");
+var redInput = document.getElementById("redInput");
+var greenSlide = document.getElementById("greenSlide");
+var greenInput = document.getElementById("greenInput");
+var blueSlide = document.getElementById("blueSlide");
+var blueInput = document.getElementById("blueInput");
+var previewColor = document.getElementById("previewColor");
 
-slider.oninput = function(){
-    size = (int)(this.value);
-    strokeSize.innerHTML = slider.value;
+sizeSlide.addEventListener('input', sliderEqualize);
+sizeInput.addEventListener('input', InputEqualize);
+redSlide.addEventListener('input', sliderEqualize);
+redInput.addEventListener('input', InputEqualize);
+greenSlide.addEventListener('input', sliderEqualize);
+greenInput.addEventListener('input', InputEqualize);
+blueSlide.addEventListener('input', sliderEqualize);
+blueInput.addEventListener('input', InputEqualize);
+
+
+function valuesEqualize(){
+    size = int(sizeInput.value);
+    r = int(redInput.value);
+    g = int(greenInput.value);
+    b = int(blueInput.value);
+    color = rgbToHex(r,g,b);
+    previewColor.style.backgroundColor = color;
 }
 
+function sliderEqualize(){
+    sizeInput.value = sizeSlide.value;
+    redInput.value = redSlide.value;
+    greenInput.value = greenSlide.value;
+    blueInput.value = blueSlide.value;
+    valuesEqualize();
+}
 
+function InputEqualize(){
+    sizeSlide.value = sizeInput.value;  
+    redSlide.value = redInput.value;    
+    greenSlide.value = greenInput.value;
+    blueSlide.value = blueInput.value;
+    valuesEqualize();
+}
 
+function changeColor(rr,gg,bb){
+    r = rr;
+    g = gg;
+    b = bb;
+    redInput.value = r;
+    greenInput.value = g;
+    blueInput.value = b;
+    InputEqualize();
+}
+
+//HELPER FUNCTIONS
+function drawSpot(x, y, s, c)
+{
+    fill(c);
+    noStroke();
+    ellipse(x, y, s);
+}
+
+function rgbToHex(r, g, b)
+{
+    return  '#' + rgbToHexHelper(r) + rgbToHexHelper(g) + rgbToHexHelper(b);
+}
+
+function rgbToHexHelper(rgb) { 
+    var hex = Number(rgb).toString(16);
+    if (hex.length < 2) {
+         hex = "0" + hex;
+    }
+    return hex;
+  };
+  
 
 //THE CHAT STUFF
 var message = document.getElementById('message');
@@ -149,9 +222,3 @@ socket.on('chat', function(data){
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 });
 
-function drawSpot(x, y, s, c)
-{
-    fill(c);
-    noStroke();
-    ellipse(x, y, s, s);
-}

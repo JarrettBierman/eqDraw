@@ -42,7 +42,7 @@
 			margin-top: 5px;
 			border: 2px solid black;
 			max-width: 400px;
-			max-height: 400px;
+			max-height: 230px;
 			height: 750px;
 			overflow: auto;
 		}
@@ -62,12 +62,18 @@
 			display: inline-block;
 			border-radius: 12px;	
 		}
+
+		.slider{
+			width: 350px;
+		}
+
 		#red{background-color: red;}
 		#orange{background-color: orange;}
 		#yellow{background-color: yellow; color:black;}
 		#green{background-color: green;}
 		#blue{background-color: blue;}
 		#purple{background-color: purple;}
+		#pink{background-color: pink;}
 		#black{background-color: black;}
 		#deleteButton{background-color:deeppink;}
 		#send{background-color:royalblue;}
@@ -76,6 +82,16 @@
 				border:1px solid #000000;
 				color:black;
 			  }
+		#previewColor{
+			border: solid black;
+			height: 70px;
+			width: 350px;
+			padding: 10px;
+			position: relative;
+			margin: 10px;
+			margin-right: 100px;
+			background-color: red;
+		}
 
 	</style>
 </head>
@@ -85,17 +101,34 @@
 	<button type="button" id="orange">ORANGE</button>
 	<button type="button" id="yellow">YELLOW</button>
 	<button type="button" id="green">GREEN</button>
-	<input type="color" id="chooser" value="#ffdab9">
-	<p></p>
 	<button type="button" id="blue">BLUE</button>
+	<p></p>
 	<button type="button" id="purple">PURPLE</button>
+	<button type="button" id="pink">PINK</button>
 	<button type="button" id="black">BLACK</button>
 	<button type="button" id="white">WHITE</button>
-	<button type="button" id="custom">CUSTOM</button>
-	<p></p>
 	<button type="button" id="deleteButton" name="deleteButton">DELETE ALL</button>
-	<input type="range" min=1 max=100 value = 15 id="range">
-	<span id="size"></span>
+	<p></p>
+	
+	<h3>Size</h3>
+	<input type="range" min=1 max=100 value = 15 class="slider" id="sizeSlide">
+	<input type="number" min=1 max= 100 value = 15 id= "sizeInput">
+	
+	<div id="previewColor"></div>
+	
+	<p></p>
+	<h3>Red</h3>
+	<input type="range" min=0 max=255 value = 255 class="slider" id="redSlide">
+	<input type="number" min=0 max= 255 value = 255 id= "redInput">
+	<p></p>
+	<h3>Green</h3>
+	<input type="range" min=0 max=255 value = 0 class="slider" id="greenSlide">
+	<input type="number" min=0 max= 255 value = 0 id= "greenInput">
+	<p></p>
+	<h3>Blue</h3>
+	<input type="range" min=0 max=255 value = 0 class="slider" id="blueSlide">
+	<input type="number" min=0 max= 255 value = 0 id= "blueInput">
+
 	<p></p>
 
 	<div id="chat" data-spy="scroll" class="thing">
