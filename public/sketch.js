@@ -1,6 +1,6 @@
 //p5.disableFriendlyErrors = true; // disables FES
-var socket = io.connect('https://hills-connection.herokuapp.com/');
-// var socket = io.connect('localhost:3000');
+// var socket = io.connect('https://hills-connection.herokuapp.com/');
+var socket = io.connect('localhost:3000');
 var size;
 var color;
 var r, g, b;
@@ -12,7 +12,7 @@ window.onload = function(){
 }
 
 function setup() {
-    var canvas =  createCanvas(windowWidth, windowHeight);
+    var canvas =  createCanvas(window.innerWidth, window.innerHeight);
     canvas.position(450, 0);
     frameRate(10);
     size = 15;
