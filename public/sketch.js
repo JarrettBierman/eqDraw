@@ -1,5 +1,5 @@
 //p5.disableFriendlyErrors = true; // disables FES
-var socket = io.connect('https://hills-connection.herokuapp.com/');
+var socket = io.connect('https://eqdraw.herokuapp.com/');
 // var socket = io.connect('localhost:3000');
 var size;
 var color;
