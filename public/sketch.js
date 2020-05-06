@@ -1,10 +1,13 @@
 //p5.disableFriendlyErrors = true; // disables FES
-var socket = io.connect('https://hills-connection.herokuapp.com/');
-// var socket = io.connect('localhost:3000');
+// var socket = io.connect('https://hills-connection.herokuapp.com/');
+var socket = io.connect('localhost:3000');
 var size;
 var color;
 var r, g, b;
 var alreadyDrawn = [];
+var container = document.getElementById('sketch');
+var cWidth = container.clientWidth;
+var cHeight = container.clientHeight;
 
 window.onload = function(){
     socket.emit('load-in');
@@ -12,8 +15,10 @@ window.onload = function(){
 }
 
 function setup() {
-    var canvas =  createCanvas(window.innerWidth, window.innerHeight);
-    canvas.position(450, 0);
+    // alert(cWidth + " x " + cHeight);
+    //width: 1462     height: 931
+    var canvas =  createCanvas(1462, 928);
+    canvas.parent('sketch');
     frameRate(10);
     size = 15;
     r = 255;
@@ -45,7 +50,23 @@ function setup() {
     //erase the entire screen
     socket.on('delete', function(data){
         background(51);
-    });  
+    }); 
+    
+    //let the server know that a client has joined
+    socket.emit('iJoined');
+    socket.on('personJoin', function(data){
+        console.log(data.joined + " has joined");
+        console.log("People Online: " + data.everyone.length);
+        document.getElementById('peopleCount').innerText = "People Online: " + data.everyone.length;
+    })
+    
+    //a person has left
+    socket.on('personLeft', function(data){
+        console.log(data.left + " has left") 
+        console.log("People Online: " + data.remaining.length);
+        document.getElementById('peopleCount').innerText = "People Online: " + data.remaining.length;
+    });
+    valuesEqualize();
     
     
 }
@@ -55,14 +76,19 @@ function draw(){
 function mouseDragged()
 {
     //send the information
-    socket.emit('orbs', {x: mouseX, y: mouseY, s: size, color: color});
-    drawSpot(mouseX, mouseY, size, color);
+    if(mouseX >= 0){
+        socket.emit('orbs', {x: mouseX, y: mouseY, s: size, color: color});
+        drawSpot(mouseX, mouseY, size, color);
+    }
+        
 }
 function mousePressed()
 {
     //send the information
-    socket.emit('orbs', {x: mouseX, y: mouseY, s: size, color: color});
-    drawSpot(mouseX, mouseY, size, color);
+    if(mouseX >= 0){
+        socket.emit('orbs', {x: mouseX, y: mouseY, s: size, color: color});
+        drawSpot(mouseX, mouseY, size, color);
+    }
 }
 
 //delete the screen
@@ -116,7 +142,13 @@ var greenSlide = document.getElementById("greenSlide");
 var greenInput = document.getElementById("greenInput");
 var blueSlide = document.getElementById("blueSlide");
 var blueInput = document.getElementById("blueInput");
-var previewColor = document.getElementById("previewColor");
+// var previewColor = document.getElementById("previewColor");
+
+var prevCol = document.getElementById("prevCol");
+var ctx = prevCol.getContext("2d");
+
+
+
 
 sizeSlide.addEventListener('input', sliderEqualize);
 sizeInput.addEventListener('input', InputEqualize);
@@ -134,7 +166,7 @@ function valuesEqualize(){
     g = int(greenInput.value);
     b = int(blueInput.value);
     color = rgbToHex(r,g,b);
-    previewColor.style.backgroundColor = color;
+    updatePrevCol();
 }
 
 function sliderEqualize(){
@@ -163,6 +195,16 @@ function changeColor(rr,gg,bb){
     InputEqualize();
 }
 
+// //window resize
+// window.onresize = function(){
+//     console.log("changing window size");
+//     container = document.getElementById('sketch');
+//     cWidth = container.clientWidth;
+//     cHeight = container.clientHeight;
+//     resizeCanvas(cWidth,cHeight);
+//     background(51);
+// }
+
 //HELPER FUNCTIONS
 function drawSpot(x, y, s, c)
 {
@@ -182,7 +224,22 @@ function rgbToHexHelper(rgb) {
          hex = "0" + hex;
     }
     return hex;
-  };
+};
+
+function updatePrevCol()
+{
+    ctx.clearRect(0, 0, prevCol.width, prevCol.height)
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    if(r > 220 && g > 220 && b > 220)
+        ctx.strokeStyle = "#000000";
+    else
+        ctx.strokeStyle = "#FFFFFF";
+    ctx.strokeSize = 1;
+    ctx.arc(prevCol.width/2, prevCol.height/2, size/2, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+}
 
 
 //THE CHAT STUFF

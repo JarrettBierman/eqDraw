@@ -13,8 +13,19 @@ app.use(express.static('public'));
 
 //set up the socket
 var io = socket(server); //we want this socket to work with this server.
-io.on('connection', function(socket){//when a client connects, this code runs :)
-    console.log("new connection: " + socket.id);
+
+//This whole function manages the connections, put all client/server related connection code here
+io.on('connection', function(socket){
+    console.log(socket.id + " has joined");
+    console.log("there are " + Object.keys(io.sockets.connected).length + " people online");
+    // console.log(Object.keys(io.sockets.connected));
+
+    //person joining
+    socket.on('iJoined', function(){
+        // console.log("The new client has informed us that he has joined")
+        io.emit('personJoin', {joined: socket.id, everyone: Object.keys(io.sockets.connected)});
+    });
+    
 
     //draw the orbs
     socket.on('orbs', function(data){
@@ -26,6 +37,7 @@ io.on('connection', function(socket){//when a client connects, this code runs :)
     socket.on('load-in', function(){
         io.emit('load-in', {spots: spots});
     });
+
 
 
     
@@ -40,4 +52,14 @@ io.on('connection', function(socket){//when a client connects, this code runs :)
         io.emit('delete', data);
     });
 
+    //person leaving
+    socket.on('disconnect', function(){
+        console.log(socket.id + " has left");
+        console.log("there are " + Object.keys(io.sockets.connected).length + " people online");
+        // console.log(Object.keys(io.sockets.connected));
+        io.emit('personLeft', {left: socket.id, remaining: Object.keys(io.sockets.connected)});
+    });
+
 });
+
+//helper functions

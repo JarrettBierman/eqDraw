@@ -5,38 +5,30 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<title>The Hills Connection</title>
+	<title>EQ Draw</title>
+	<link rel="shortcut icon" type="image/x-icon" href="EQDrawLogo.ico"/>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
 	
 	
 	<style>
+		
+	</style>
+	<style type = "text/css">
+		* {
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+		}
 
-		body {
-			margin:0;
-			padding:0;
-			overflow: hidden;
+		html, body {
+			overflow: clip;
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
 		}
 		canvas {
 			margin:auto;
 		}
-	</style>
-	<style type = "text/css">
-		*
-		{
-			font-family: Verdana, Geneva, Tahoma, sans-serif;
-		}
-
-		h1
-		{
-			color:saddlebrown;
-		}
-
-		body
-		{
-			margin-top: 5px;
-			margin-left: 5px;
-		}
-
+		
 		#output
 		{
 			font-size: 12px;
@@ -57,15 +49,16 @@
 		{
 			border: none;
 			color: white;
-			padding: 10px 10px;
+			padding: 5px 5px;
+			margin: 2px;
 			text-align: center;
 			text-decoration: none;
 			display: inline-block;
-			border-radius: 12px;	
+			border-radius: 200px;	
 		}
 
 		.slider{
-			width: 350px;
+			width: 80%;
 		}
 
 		#red{background-color: red;}
@@ -83,67 +76,93 @@
 				border:1px solid #000000;
 				color:black;
 			  }
-		#previewColor{
-			border: solid black;
-			height: 70px;
-			width: 350px;
-			padding: 10px;
-			position: relative;
-			margin: 10px;
-			margin-right: 100px;
-			background-color: red;
+
+		.container {
+			display: flex;
+			width: 100%;
+			height: 100%;
 		}
 
+		.item {
+			overflow: auto;
+		}
+
+		#sketch {
+			flex-grow: 1;
+			overflow: auto;
+		}
+
+		#tools {
+			display: flex;
+			flex-direction: column;
+			align-items: stretch;
+			overflow-x: hidden;
+			margin-left: 5px;
+		}
+
+		#colors{
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		}
 	</style>
 </head>
 <body>
-	<h1>The Hills Connection</h1>
-	<button type="button" id="red">RED</button>
-	<button type="button" id="orange">ORANGE</button>
-	<button type="button" id="yellow">YELLOW</button>
-	<button type="button" id="green">GREEN</button>
-	<button type="button" id="blue">BLUE</button>
-	<p></p>
-	<button type="button" id="purple">PURPLE</button>
-	<button type="button" id="pink">PINK</button>
-	<button type="button" id="black">BLACK</button>
-	<button type="button" id="white">WHITE</button>
-	<button type="button" id="deleteButton" name="deleteButton">DELETE ALL</button>
-	<p></p>
-	
-	<h3>Size</h3>
-	<input type="range" min=1 max=100 value = 15 class="slider" id="sizeSlide">
-	<input type="number" min=1 max= 100 value = 15 id= "sizeInput">
-	
-	<div id="previewColor"></div>
-	
-	<p></p>
-	<h3>Red</h3>
-	<input type="range" min=0 max=255 value = 255 class="slider" id="redSlide">
-	<input type="number" min=0 max= 255 value = 255 id= "redInput">
-	<p></p>
-	<h3>Green</h3>
-	<input type="range" min=0 max=255 value = 0 class="slider" id="greenSlide">
-	<input type="number" min=0 max= 255 value = 0 id= "greenInput">
-	<p></p>
-	<h3>Blue</h3>
-	<input type="range" min=0 max=255 value = 0 class="slider" id="blueSlide">
-	<input type="number" min=0 max= 255 value = 0 id= "blueInput">
+	<div class="container">
+		<div class="item" id="tools">
+			<h1 style="text-align: center;">EQ Draw</h1>
+			<h3 id="peopleCount" style="text-align: center;"></h3>
+			<div id="colors">
+				<button type="button" id="red">RED</button>
+				<button type="button" id="orange">ORANGE</button>
+				<button type="button" id="yellow">YELLOW</button>
+				<button type="button" id="green">GREEN</button>
+				<button type="button" id="blue">BLUE</button>
+				<button type="button" id="purple">PURPLE</button>
+				<button type="button" id="pink">PINK</button>
+				<button type="button" id="black">BLACK</button>
+				<button type="button" id="white">WHITE</button>
+				<button type="button" id="deleteButton" name="deleteButton">ERASE ALL</button>
+			</div>
+			<canvas id="prevCol"></canvas>
+			<div id="srgb">
+				<h3>Size</h3>
+				<input type="range" min=1 max=100 value = 15 class="slider" id="sizeSlide">
+				<input type="number" min=1 max= 100 value = 15 id= "sizeInput">			
 
-	<p></p>
-
-	<div id="chat" data-spy="scroll" class="thing">
-		<div id = "chat-window">
-			<input id="handle" type="text" placeholder = "Name"/>
-			<input id="message" type="text" placeholder = "Message"/>
-			<button id="send">Send</button>
-			<div id="output"></div>
+				<h3 style="color: red;">Red</h3>
+				<input type="range" min=0 max=255 value = 255 class="slider" id="redSlide">
+				<input type="number" min=0 max= 255 value = 255 id= "redInput">
+				
+				<h3 style="color: green;">Green</h3>
+				<input type="range" min=0 max=255 value = 0 class="slider" id="greenSlide">
+				<input type="number" min=0 max= 255 value = 0 id= "greenInput">
+	
+				<h3 style="color: blue;">Blue</h3>
+				<input type="range" min=0 max=255 value = 0 class="slider" id="blueSlide">
+				<input type="number" min=0 max= 255 value = 0 id= "blueInput">
+			</div>
+			<div id="chat" data-spy="scroll" class="thing">
+				<div id = "chat-window">
+					<input id="handle" type="text" placeholder = "Name"/>
+					<input id="message" type="text" placeholder = "Message"/>
+					<button id="send">Send</button>
+					<div id="output">
+						<p>Hello, Welcome to EQ Draw: an egalitarian drawing canvas where everyone online can draw at the same time. 
+							Use the tools to draw, but be careful: erasing the canvas deletes everything for everyone :)</p>
+					</div>
+				</div>
+			</div>
 		</div>
+		<div class="item" id="sketch" width="100%"></div>
 	</div>
+	
+
 
 	<script src="libraries/p5.js"></script>
 	<script src="libraries/p5.dom.js"></script>
 	<script src="libraries/p5.sound.js"></script>
 	<script src="sketch.js"></script>
+
+
 </body>
 </html>
